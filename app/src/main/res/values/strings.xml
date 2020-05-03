@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">图书管理系统</string>
+    <string name="borrow">借阅</string>
+    <string name="library">书库</string>
+    <string name="manager">我的</string>
+    <string name="book_library">书库</string>
+    <string name="student_borrow_manager">学生借阅管理</string>
+    <string name="borrow_list">借书列表</string>
+    <string name="company_name">公司名字: 长治学院</string>
+    <string name="company_website">公司网址：</string>
+    <string name="company_website_value">http://192.168.0.107:8080/</string>
+    <string name="company_contact_phone">公司手机号：</string>
+    <string name="company_contact_phone_value">13313364786</string>
+    <string name="register">注册</string>
+    <string name="tv_user_name">用户名:</string>
+    <string name="password">密码:</string>
+    <string name="forget_password">忘记密码</string>
+    <string name="login">登录</string>
+    <string name="user_name">请输入用户名</string>
+    <string name="todo">icon</string>
+</resources>

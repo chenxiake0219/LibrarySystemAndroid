@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/layout_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:elevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:minHeight="?attr/actionBarSize">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register"
+                android:textColor="@color/colorTabSelectedPink"
+                android:textSize="16sp"
+                android:layout_gravity="end"
+                android:padding="10dp"
+                android:layout_marginEnd="16dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:id="@+id/toolbar_register" />
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout_login_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_toolbar"
+        app:layout_constraintVertical_bias="0.233">
+
+        <ImageView
+            android:id="@+id/iv_login_logo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/ic_launcher_foreground"
+            android:contentDescription="@string/todo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <View
+            android:id="@+id/view_mobile_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="6dp"
+            android:background="@color/colorSignInLightGrey"
+            app:layout_constraintEnd_toEndOf="@+id/et_mobile_number"
+            app:layout_constraintStart_toStartOf="@+id/et_mobile_number"
+            app:layout_constraintTop_toBottomOf="@+id/et_mobile_number" />
+
+        <EditText
+            android:id="@+id/et_mobile_number"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="30dp"
+            android:autofillHints=""
+            android:background="@android:color/transparent"
+            android:hint="@string/user_name"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/colorPersonalTextBlack"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_spinner_divider" />
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="30dp"
+            android:background="@android:color/transparent"
+            android:ems="10"
+            android:hint="@string/password"
+            android:importantForAutofill="no"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:textColor="@color/colorPersonalTextBlack"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_mobile_divider" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="45dp"
+            android:gravity="center"
+            android:spinnerMode="dropdown"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/type_tv"
+            app:layout_constraintTop_toBottomOf="@+id/iv_login_logo" />
+
+        <View
+            android:id="@+id/view_spinner_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="6dp"
+            android:background="@color/colorSignInLightGrey"
+            app:layout_constraintEnd_toEndOf="@+id/spinner"
+            app:layout_constraintStart_toStartOf="@+id/type_tv"
+            app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
+        <TextView
+            android:id="@+id/type_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:text="类别:"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/spinner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/spinner" />
+
+        <View
+            android:id="@+id/view_password_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="6dp"
+            android:background="@color/colorSignInLightGrey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/et_password"
+            app:layout_constraintTop_toBottomOf="@+id/et_password" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/selector_button_gradient_deafault_corner_21dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/login"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/layout_login_content"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/layout_login_content"
+        app:layout_constraintTop_toBottomOf="@+id/layout_login_content" />
+
+</android.support.constraint.ConstraintLayout>
