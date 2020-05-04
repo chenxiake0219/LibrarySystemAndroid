@@ -1,5 +1,6 @@
 package com.jy.librarysystemandroid.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -14,6 +15,7 @@ import com.google.gson.reflect.TypeToken
 import com.jy.librarysystemandroid.LibConfig
 import com.jy.librarysystemandroid.activity.MainActivity
 import com.jy.librarysystemandroid.R
+import com.jy.librarysystemandroid.activity.BookInfoActivity
 import com.jy.librarysystemandroid.adapter.LibraryAdapter
 import com.jy.librarysystemandroid.api.LibrarySystemApi
 import com.jy.librarysystemandroid.event.BorrowEvent
@@ -71,6 +73,12 @@ class LibraryFragment : Fragment() {
                     R.id.btn_edie -> {
                         Toast.makeText(context, "编辑", Toast.LENGTH_LONG).show()
                     }
+                    R.id.btn_look -> {
+                        //查看 图书详情
+                        val intent = Intent(context, BookInfoActivity::class.java)
+                        intent.putExtra(BookInfoActivity.BOOKID, books.bookid)
+                        startActivity(intent)
+                    }
                     R.id.btn_borrow -> {
                         if (SPUtils.getInstance().getInt(LibConfig.LOGIN_U_TYPE) == LibConfig.LOGIN_TYPE_STUDENT) {
                             val bean = LoginUtil.convertLoginData(SPUtils.getInstance().getString(LibConfig.LOGIN_U_DATA))
@@ -104,8 +112,8 @@ class LibraryFragment : Fragment() {
                                                 var code = jsonObject.optInt("code")
                                                 if (code == LibConfig.SUCCESS_CODE) {
                                                     var event: StuBorrowEvent = StuBorrowEvent()
-                                                    event.stuid = mStuid
-                                                    EventBus.getDefault().post(event)
+//                                                    event.stuid = mStuid
+//                                                    EventBus.getDefault().post(event)
                                                     Toast.makeText(context, "借阅成功", Toast.LENGTH_LONG)
                                                         .show()
                                                 }

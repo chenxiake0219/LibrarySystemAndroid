@@ -91,6 +91,10 @@ class LibraryAdapter(
             btn_edie.setOnClickListener {
                 item?.let { it1 -> onItemClickListener?.onItemClick(it, it1) }
             }
+
+            btn_look.setOnClickListener{
+                item?.let { it1 -> onItemClickListener?.onItemClick(it, it1) }
+            }
         }
     }
 

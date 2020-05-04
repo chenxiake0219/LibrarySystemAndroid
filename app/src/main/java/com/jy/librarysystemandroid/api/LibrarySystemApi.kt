@@ -12,7 +12,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class LibrarySystemApi {
 
-    private val DOMAIN = "http://192.168.0.107:8080/"
     private var mRetrofit: Retrofit
     private var mOkHttpClient: OkHttpClient
 
@@ -63,5 +62,9 @@ class LibrarySystemApi {
 
     fun returnBook(body:RequestBody) : Call<ResponseBody> {
         return mReturnBookApi.returnBook(body)
+    }
+
+    companion object {
+        val DOMAIN = "http://192.168.0.105:8080/"
     }
 }

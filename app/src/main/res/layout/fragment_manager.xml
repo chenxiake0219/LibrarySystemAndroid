@@ -31,6 +31,18 @@
                 android:text="@string/manager" />
         </android.support.v7.widget.Toolbar>
 
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:paddingEnd="8dp"
+            android:paddingBottom="5dp"
+            android:textColor="@color/colorAccent"
+            android:background="@android:color/transparent"
+            android:text="退出"
+            android:layout_alignParentEnd="true"
+            android:textSize="12sp" />
+
         <View
             android:id="@+id/view_toolbar_divider"
             android:layout_width="match_parent"

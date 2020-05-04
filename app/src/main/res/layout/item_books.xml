@@ -26,7 +26,7 @@
             android:textSize="12sp" />
 
         <Button
-            android:id="@+id/btn_borrow"
+            android:id="@+id/btn_look"
             android:layout_width="60dp"
             android:layout_height="35dp"
             android:paddingEnd="10dp"
@@ -35,6 +35,20 @@
             android:paddingLeft="5dp"
             android:gravity="end|center_vertical"
             android:layout_toLeftOf="@+id/btn_edie"
+            android:background="@android:color/transparent"
+            android:text="查看"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btn_borrow"
+            android:layout_width="60dp"
+            android:layout_height="35dp"
+            android:paddingEnd="10dp"
+            android:visibility="visible"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:gravity="end|center_vertical"
+            android:layout_toLeftOf="@+id/btn_look"
             android:background="@android:color/transparent"
             android:text="借阅"
             android:textSize="12sp" />
