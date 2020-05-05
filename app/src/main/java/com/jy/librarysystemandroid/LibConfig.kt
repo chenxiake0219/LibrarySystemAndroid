@@ -12,4 +12,5 @@ object LibConfig {
     //登录人员类型
     const val LOGIN_TYPE_STUDENT = 3
     const val LOGIN_TYPE_ADMIN = 4
+    const val LOGIN_TYPE_NO_LOGIN = 0
 }

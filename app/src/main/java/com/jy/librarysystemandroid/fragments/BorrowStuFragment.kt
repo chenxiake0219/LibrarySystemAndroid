@@ -20,7 +20,6 @@ import com.jy.librarysystemandroid.event.RefreshEvent
 import com.jy.librarysystemandroid.model.BorrowListBean
 import com.jy.librarysystemandroid.utils.LoginUtil
 import com.jy.librarysystemandroid.utils.SPUtils
-import com.jy.librarysystemandroid.utils.UIUtils
 import kotlinx.android.synthetic.main.activity_list_borrow.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -52,7 +51,7 @@ class BorrowStuFragment : BaseListFragment(){
 
     override fun initTitle() {
         super.initTitle()
-        var data = LoginUtil.convertLoginData(SPUtils.getInstance().getString(LibConfig.LOGIN_U_DATA))
+        var data = LoginUtil.convertLoginData(SPUtils.instance.getString(LibConfig.LOGIN_U_DATA))
         stuid = data.stuid
         setUpView()
     }

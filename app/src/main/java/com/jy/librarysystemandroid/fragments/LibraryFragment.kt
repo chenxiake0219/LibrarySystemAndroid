@@ -1,5 +1,6 @@
 package com.jy.librarysystemandroid.fragments
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -9,28 +10,30 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.jy.librarysystemandroid.LibConfig
-import com.jy.librarysystemandroid.activity.MainActivity
 import com.jy.librarysystemandroid.R
+import com.jy.librarysystemandroid.activity.BookAddActivity
 import com.jy.librarysystemandroid.activity.BookInfoActivity
+import com.jy.librarysystemandroid.activity.MainActivity
+import com.jy.librarysystemandroid.activity.StuInfoEditActivity
 import com.jy.librarysystemandroid.adapter.LibraryAdapter
 import com.jy.librarysystemandroid.api.LibrarySystemApi
-import com.jy.librarysystemandroid.event.BorrowEvent
+import com.jy.librarysystemandroid.dialog.CommonDialog
 import com.jy.librarysystemandroid.event.StuBorrowEvent
 import com.jy.librarysystemandroid.model.Books
-import com.jy.librarysystemandroid.model.StudentBorrowBean
 import com.jy.librarysystemandroid.utils.DateUtil
 import com.jy.librarysystemandroid.utils.LoginUtil
 import com.jy.librarysystemandroid.utils.SPUtils
 import com.jy.librarysystemandroid.utils.UIUtils
 import kotlinx.android.synthetic.main.fragment_borrow.*
+import kotlinx.android.synthetic.main.title_view.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
-import org.greenrobot.eventbus.EventBus
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,6 +41,7 @@ import retrofit2.Response
 
 class LibraryFragment : Fragment() {
 
+    private lateinit var mLookUpDialog: CommonDialog
     private var mCurrentPage = 1
     private var mPageSize = 15
     private var mIsCreateView: Boolean = false
@@ -60,8 +64,92 @@ class LibraryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         toolbar.title = ""
         (context as MainActivity).setSupportActionBar(toolbar)
+        toolbar_title.setText(R.string.book_library)
+        val utype = SPUtils.getInstance("").getInt(LibConfig.LOGIN_U_TYPE)
+        if (utype == LibConfig.LOGIN_TYPE_ADMIN) {
+            btn_trigger.visibility = View.VISIBLE
+        }
+        btn_trigger.setOnClickListener {
+            //添加
+            val intent = Intent(activity, BookAddActivity::class.java)
+            startActivityForResult(intent, 1)
+        }
+        btn_lookup.visibility = View.VISIBLE
+        btn_lookup.setOnClickListener {
+            //查询
+            mLookUpDialog = CommonDialog.Builder(context!!)
+                .setTitle("查询书籍")
+                .setContentView(
+                    View.inflate(
+                        context,
+                        R.layout.dialog_book_look,
+                        null
+                    )
+                )
+                .setPositiveButton("查询",
+                    DialogInterface.OnClickListener { dialogInterface, i ->
+                        lookUpMessage()
+                        dialogInterface.dismiss()
+                    })
+                .setNegativeButton("取消",
+                    DialogInterface.OnClickListener { dialogInterface, i -> dialogInterface.dismiss() })
+                .create()
+            mLookUpDialog.show()
+        }
         setUpView()
         mIsCreateView = true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1 && resultCode == 2) {
+            refresh()
+        }
+    }
+
+    private fun lookUpMessage() {
+        mData.clear()
+        mAdapter!!.notifyDataSetChanged()
+        addLoading()
+        val bookName: EditText = mLookUpDialog.findViewById(R.id.et_message_look_up)
+        LibrarySystemApi(context!!).lookBook(bookName.text.toString())
+            .enqueue(object : Callback<ResponseBody?> {
+                override fun onResponse(
+                    call: Call<ResponseBody?>,
+                    response: Response<ResponseBody?>
+                ) {
+                    if (null != response.body()) {
+                        try {
+                            val jsonObject = JSONObject(response.body()!!.string())
+                            val code = jsonObject.optInt("code")
+                            if (code == LibConfig.SUCCESS_CODE) {
+                                val data = jsonObject.optJSONArray("data")
+                                val turnsType = object : TypeToken<List<Books>>() {}.type
+                                val books: List<Books> =
+                                    Gson().fromJson<List<Books>>(
+                                        data.toString(),
+                                        turnsType
+                                    )
+                                if (books.isNotEmpty()) {
+                                    mData.addAll(books)
+                                }
+                            }
+                        } catch (e: java.lang.Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        UIUtils.toast("没有任何数据")
+                    }
+                    removeLoading()
+                }
+
+                override fun onFailure(
+                    call: Call<ResponseBody?>,
+                    t: Throwable
+                ) {
+                    removeLoading()
+                }
+            })
     }
 
     private fun setUpView() {
@@ -76,12 +164,14 @@ class LibraryFragment : Fragment() {
                     R.id.btn_look -> {
                         //查看 图书详情
                         val intent = Intent(context, BookInfoActivity::class.java)
-                        intent.putExtra(BookInfoActivity.BOOKID, books.bookid)
+                        val bundle = Bundle()
+                        bundle.putParcelable(BookInfoActivity.BOOKID, books)
+                        intent.putExtras(bundle)
                         startActivity(intent)
                     }
                     R.id.btn_borrow -> {
-                        if (SPUtils.getInstance().getInt(LibConfig.LOGIN_U_TYPE) == LibConfig.LOGIN_TYPE_STUDENT) {
-                            val bean = LoginUtil.convertLoginData(SPUtils.getInstance().getString(LibConfig.LOGIN_U_DATA))
+                        if (SPUtils.getInstance("").getInt(LibConfig.LOGIN_U_TYPE) == LibConfig.LOGIN_TYPE_STUDENT) {
+                            val bean = LoginUtil.convertLoginData(SPUtils.getInstance("").getString(LibConfig.LOGIN_U_DATA))
                             mStuid = bean.stuid
                         }
                         context?.let {
@@ -220,9 +310,9 @@ class LibraryFragment : Fragment() {
                                             turnsType
                                         )
                                     if (books.isNotEmpty()) {
+                                        mData.addAll(books)
                                         mAdapter?.notifyDataSetChanged()
                                         mCurrentPage++
-                                        mData.addAll(books.asReversed())
                                     }
                                 }
                             } catch (e: Exception) {

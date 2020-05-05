@@ -7,8 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.jy.librarysystemandroid.activity.MainActivity
 import kotlinx.android.synthetic.main.fragment_borrow.*
+import kotlinx.android.synthetic.main.title_view.*
 
-open abstract class BaseListFragment : Fragment() {
+abstract class BaseListFragment : Fragment() {
 
     protected var mCurrentPage = 1
     protected var mPageSize = 15

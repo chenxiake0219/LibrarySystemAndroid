@@ -2,11 +2,9 @@ package com.jy.librarysystemandroid.adapter
 
 import android.graphics.drawable.AnimationDrawable
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import com.jy.librarysystemandroid.LibConfig
 import com.jy.librarysystemandroid.R
@@ -25,7 +23,7 @@ class LibraryAdapter(
     private val VIEW_FOOTER = 2
 
     interface OnItemClickListener {
-        fun onItemClick(vi00ew: View, books: Books)
+        fun onItemClick(view: View, books: Books)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -72,10 +70,11 @@ class LibraryAdapter(
             tv_price.text = item?.price
             tv_press.text = item?.press
 
-            val utype = SPUtils.getInstance().getInt(LibConfig.LOGIN_U_TYPE)
+            val utype = SPUtils.instance.getInt(LibConfig.LOGIN_U_TYPE)
             if (utype == LibConfig.LOGIN_TYPE_STUDENT) {
                 btn_borrow.visibility = View.VISIBLE
-                btn_edie.visibility = View.INVISIBLE
+                btn_look.visibility = View.GONE
+                btn_edie.visibility = View.GONE
             } else if (utype == LibConfig.LOGIN_TYPE_ADMIN) {
                 if (isBorrow) {
                     btn_borrow.visibility = View.VISIBLE

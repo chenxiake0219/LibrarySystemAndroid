@@ -7,10 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jy.librarysystemandroid.LibConfig
+import com.jy.librarysystemandroid.LibConfig.LOGIN_TYPE_NO_LOGIN
 import com.jy.librarysystemandroid.R
 import com.jy.librarysystemandroid.activity.LoginActivity
 import com.jy.librarysystemandroid.api.LibrarySystemApi
-import com.jy.librarysystemandroid.utils.LoginUtil
 import com.jy.librarysystemandroid.utils.LoginUtil.convertLoginData
 import com.jy.librarysystemandroid.utils.SPUtils
 import kotlinx.android.synthetic.main.fragment_manager.*
@@ -28,8 +28,8 @@ class ManagerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val data = SPUtils.getInstance().getString(LibConfig.LOGIN_U_DATA);
-        val utype = SPUtils.getInstance().getInt(LibConfig.LOGIN_U_TYPE)
+        val data = SPUtils.instance.getString(LibConfig.LOGIN_U_DATA);
+        val utype = SPUtils.instance.getInt(LibConfig.LOGIN_U_TYPE)
         val stuBean = convertLoginData(data)
         tv_name.text = stuBean.name
         if (utype == LibConfig.LOGIN_TYPE_ADMIN) {
@@ -41,8 +41,8 @@ class ManagerFragment : Fragment() {
         tv_company_website_.setText(LibrarySystemApi.DOMAIN)
 
         btn_logout.setOnClickListener{
-            SPUtils.getInstance().put(LibConfig.LOGIN_U_DATA, "");
-            SPUtils.getInstance().put(LibConfig.LOGIN_U_TYPE, "")
+            SPUtils.getInstance("").put(LibConfig.LOGIN_U_DATA, "");
+            SPUtils.getInstance("").put(LibConfig.LOGIN_U_TYPE, LOGIN_TYPE_NO_LOGIN)
             activity?.finish()
             val intent = Intent(context, LoginActivity::class.java)
             startActivity(intent)

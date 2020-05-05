@@ -1,7 +1,10 @@
 package com.jy.librarysystemandroid.activity
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,11 +12,10 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import com.google.gson.Gson
 import com.jy.librarysystemandroid.LibConfig
+import com.jy.librarysystemandroid.LibConfig.LOGIN_TYPE_NO_LOGIN
 import com.jy.librarysystemandroid.R
 import com.jy.librarysystemandroid.api.LibrarySystemApi
-import com.jy.librarysystemandroid.model.StudentBorrowBean
 import com.jy.librarysystemandroid.utils.SPUtils
 import com.jy.librarysystemandroid.utils.UIUtils
 import kotlinx.android.synthetic.main.activity_login.*
@@ -32,7 +34,21 @@ class LoginActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        requestPermission()
+        val utype = SPUtils.getInstance("").getInt(LibConfig.LOGIN_U_TYPE)
+        if (LOGIN_TYPE_NO_LOGIN != utype) {
+            finish()
+            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+            startActivity(intent)
+        }
+
         changeSpinner()
+        //管理员
+        et_mobile_number.setText("133222122")
+        et_password.setText("1")
+        //学生
+//           et_mobile_number.setText("15664684")
+//           et_password.setText("123")
        tv_login.setOnClickListener {
            val userName = et_mobile_number.text.toString()
            val passWord = et_password.text.toString()
@@ -48,6 +64,35 @@ class LoginActivity : Activity() {
                }
            }
        }
+    }
+
+    /*
+     * 判断是否有权限
+     * */
+    private fun hasPermisson(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+        } else {
+            true
+        }
+    }
+
+    /*
+     *
+     * 请求权限
+     * */
+    private fun requestPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            /*  if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)!=true){
+                Toast.makeText(this, "请在设置中配置授权", Toast.LENGTH_SHORT).show();
+            }*/
+            requestPermissions(
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA, Manifest.permission.VIBRATE, Manifest.permission.WAKE_LOCK
+                ),
+                1
+            )
+        }
     }
 
     //?utype=3&username=简言&password=123
@@ -72,8 +117,8 @@ class LoginActivity : Activity() {
                             UIUtils.toast("登录成功")
                             //将 utype  存起来， 后面各个界面  通过他去控制  退出时要清除
                             val data = jsonObject.opt("data")
-                            SPUtils.getInstance().put(LibConfig.LOGIN_U_TYPE, mSelectType)
-                            SPUtils.getInstance().put(LibConfig.LOGIN_U_DATA, data.toString())
+                            SPUtils.getInstance("").put(LibConfig.LOGIN_U_TYPE, mSelectType)
+                            SPUtils.getInstance("").put(LibConfig.LOGIN_U_DATA, data.toString())
                             finish()
                             val intent =
                                 Intent(this@LoginActivity, MainActivity::class.java)

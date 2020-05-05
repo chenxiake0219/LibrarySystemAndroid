@@ -2,6 +2,7 @@ package com.jy.librarysystemandroid.api
 
 import android.content.Context
 import com.jy.librarysystemandroid.api.intercepter.UrlInterceptor
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -9,6 +10,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Part
+import retrofit2.http.PartMap
 
 class LibrarySystemApi {
 
@@ -64,7 +67,28 @@ class LibrarySystemApi {
         return mReturnBookApi.returnBook(body)
     }
 
+    fun lookBook(content: String) : Call<ResponseBody> {
+        return mBookLibraryApi.lookBook(content);
+    }
+
+    fun lookStudent(name: String): Call<ResponseBody> {
+        return mStudentBorrowApi.lookStudent(name)
+
+    }
+
+    fun addStudent(password: String, gender: String, name: String, email: String, operator: String) : Call<ResponseBody>{
+        return mStudentBorrowApi.addStudent(password, gender, name, email, operator)
+    }
+
+    fun addBooks() : Call<ResponseBody>{
+        return mBookLibraryApi.addBooks()
+    }
+
+    fun uploadImage(@PartMap map: HashMap<String, RequestBody>, @Part file: MultipartBody.Part) : Call<ResponseBody>{
+        return mBookLibraryApi.uploadImage(map, file)
+    }
+
     companion object {
-        val DOMAIN = "http://192.168.0.105:8080/"
+        val DOMAIN = "http://192.168.0.101:8080/"
     }
 }

@@ -49,7 +49,7 @@ class BorrowAdapter(
         containerView
     ), LayoutContainer {
         fun bind(item: StudentBean?, index: Int) {
-            page_index.text = (index).toString()
+            page_index.text = (index + 1).toString()
             tv_index.text = item?.stuid
             tv_sex.text = item?.sex
             tv_stu_name.text = item?.name

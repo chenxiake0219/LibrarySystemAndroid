@@ -2,13 +2,13 @@ package com.jy.librarysystemandroid.activity
 
 import android.graphics.Color
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import com.jy.librarysystemandroid.LibConfig
 import com.jy.librarysystemandroid.R
 import com.jy.librarysystemandroid.adapter.TabFragmentAdapter
@@ -20,12 +20,11 @@ import com.jy.librarysystemandroid.fragments.BorrowStuFragment
 import com.jy.librarysystemandroid.fragments.LibraryFragment
 import com.jy.librarysystemandroid.fragments.ManagerFragment
 import com.jy.librarysystemandroid.utils.SPUtils
-import com.jy.librarysystemandroid.utils.UIUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.util.ArrayList
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -43,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         var flags = window.decorView.systemUiVisibility
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
 
         mLibraryFragment = LibraryFragment()
         mManagerFragment = ManagerFragment()
-        val utype = SPUtils.getInstance().getInt(LibConfig.LOGIN_U_TYPE)
+        val utype = SPUtils.getInstance("").getInt(LibConfig.LOGIN_U_TYPE)
         if (utype == LibConfig.LOGIN_TYPE_ADMIN) {
             mBorrowFragment = BorrowFragment()
             mFragmentList.add(mBorrowFragment)
